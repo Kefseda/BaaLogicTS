@@ -1,22 +1,48 @@
 //точка входа (инициализация)
+import EventBus from '/BaaLogicTS/js/systems/event_bus.js'
+import ModeManager from '/BaaLogicTS/js/managers/mode_manager.js'
+import ConnectionManager from '/BaaLogicTS/js/managers/connection_manager.js'
 
-import DragableObj from '/BaaLogicTS/js/components/simple_dragable.js'
-import SimpleScene from '/BaaLogicTS/js/components/simple_scene.js'
+import Controller from '/BaaLogicTS/js/systems/controller.js'
+import Circuit from '/BaaLogicTS/js/managers/circuit.js'
+import UIManager from '/BaaLogicTS/js/managers/ui_manager.js'
 
-var stage = new Konva.Stage({
-    container: 'container',
+const eventBus = new EventBus();
+const modeManager = new ModeManager(eventBus);
+const connectionManager = new ConnectionManager(eventBus);
+
+const stage = new Konva.Stage({
+    container: container,
     width: window.innerWidth,
-    height: window.innerHeight
+    height: 600
 });
 
-var layer = new Konva.Layer();
+const layer = new Konva.Layer();
 stage.add(layer);
 
-var scene = new SimpleScene();
-layer.add(scene);
+const ui = new UIManager(layer, eventBus);
+const circuit = new Circuit(eventBus);
+const controller = new Controller(circuit, stage, ui, connectionManager);
 
-var obj = new DragableObj({x:10, y:10});
-layer.add(obj);
+const modeBtn = document.getElementById('mode_btn');
+modeBtn.addEventListener('click', () => modeManager.ToggleMode());
 
-layer.draw();
+const pinBtn = document.getElementById('pin_btn');
+pinBtn.addEventListener('click', () => controller.addComponent({ id: 123, xPos: 100, yPos: 100, type: "Pin", value: 0 }));
 
+const notBtn = document.getElementById('not_btn');
+notBtn.addEventListener('click', () => controller.addComponent({ id: 123, xPos: 100, yPos: 100, type: "LogicElement"}));
+
+/*
+const pinBtn = document.getElementById('pin_btn');
+pinBtn.addEventListener('click', () => ui.createDynamicPin({ id: 123, xPos: 100, yPos: 100 }));
+
+const inputBtn = document.getElementById('input_btn');
+inputBtn.addEventListener('click', () => ui.createInput({ id: 123, xPos: 100, yPos: 100 }));
+
+const notBtn = document.getElementById('not_btn');
+notBtn.addEventListener('click', () => ui.createElement({ id: 123, xPos: 100, yPos: 100 }));
+
+const andBtn = document.getElementById('and_btn');
+andBtn.addEventListener('click', () => ui.createElement({ id: 123, xPos: 100, yPos: 100 }));
+*/

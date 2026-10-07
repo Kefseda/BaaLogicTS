@@ -3,7 +3,7 @@ const GameMode = Object.freeze({
     Run: 1
 });
 
-class ModeManager{
+export default class ModeManager{
     
     //только один экземпляр может существовать
     constructor(bus){
@@ -15,7 +15,7 @@ class ModeManager{
         this.currentMode = GameMode.Edit;
         ModeManager.instance = this;
     }
-
+    
     SetMode(newMode){
         if(this.currentMode == newMode) return;
 
