@@ -1,11 +1,11 @@
 //точка входа (инициализация)
-import EventBus from '/BaaLogicTS/js/systems/event_bus.js'
-import ModeManager from '/BaaLogicTS/js/managers/mode_manager.js'
-import ConnectionManager from '/BaaLogicTS/js/managers/connection_manager.js'
+import EventBus from './systems/event_bus.js'
+import ModeManager from './managers/mode_manager.js'
+import ConnectionManager from './managers/connection_manager.js'
 
-import Controller from '/BaaLogicTS/js/systems/controller.js'
-import Circuit from '/BaaLogicTS/js/managers/circuit.js'
-import UIManager from '/BaaLogicTS/js/managers/ui_manager.js'
+import Controller from './systems/controller.js'
+import Circuit from './managers/circuit.js'
+import UIManager from './managers/ui_manager.js'
 
 const eventBus = new EventBus();
 const modeManager = new ModeManager(eventBus);

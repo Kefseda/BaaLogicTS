@@ -1,5 +1,5 @@
-import ComponentBuilder from '/BaaLogicTS/js/managers/factories/component_builder.js'
-import WireFactory from '/BaaLogicTS/js/managers/factories/wire_factory.js';
+import ComponentBuilder from './factories/component_builder.js'
+import WireFactory from './factories/wire_factory.js';
 
 //это будет View
 //он отвечает за рисование объектов

@@ -1,4 +1,4 @@
-import Pin from '/BaaLogicTS/js/components/entities/pin.js'
+import Pin from '../../components/entities/pin.js'
 
 //помогает 'построить' логический элемент
 
@@ -71,4 +71,3 @@ export default class ComponentBuilder{
         return this._component;
     }
 }
-
