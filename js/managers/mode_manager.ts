@@ -19,12 +19,12 @@ export default class ModeManager {
     
     currentMode: GameMode = GameMode.Edit
 
-    bus: EventBus 
+    bus: EventBus<GameMode>
     
     // только один экземпляр может существовать < удалить
     // почему???
 
-    constructor(bus: EventBus){
+    constructor(bus: EventBus<GameMode>){
         // if(ModeManager.instance){
         //     return ModeManager.instance;
         // }
