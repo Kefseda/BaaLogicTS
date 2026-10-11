@@ -1,7 +1,6 @@
-//это узел и он создается только на логических элементах 
-// а ещё он статичен относительно логического элемента (нельзя передвигать)
+//это узел и он может как создаваться на логических элементах так и существовать отдельно
 
-//должен быть массив из соседей
+//должен быть массив из соседей? нет
 
 export default class Pin extends Konva.Group{
     constructor(id, config){
@@ -11,7 +10,7 @@ export default class Pin extends Konva.Group{
         this.sun = new Konva.Circle({
             x: 0,
             y: 0,
-            radius: 20,
+            radius: 16,
             fill: '#ffffff00'
         });
         this.add(this.sun);
@@ -19,7 +18,7 @@ export default class Pin extends Konva.Group{
         this.skin = new Konva.Circle({
             x: 0,
             y: 0,
-            radius: 10,
+            radius: 8,
             fill: 'black'
         });
         this.add(this.skin);

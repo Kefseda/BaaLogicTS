@@ -1,23 +1,4 @@
-//общий родитель для всех элементов
-//он 
-
-export default class CircuitComponent extends Konva.Group{
-    constructor(config, bus){
-        super(config);
-
-        this.bus = bus;
-        this.unsubscribe = bus.on('editor_mode', this.onModeChanged.bind(this));
-    }
-
-    onModeChanged(){}
-
-    remove(){
-        this.unsubscribe();
-        
-        //здесь логика удаления элемента
-        //можно использовать пуллинг
-    }
-}
+//просто всякие структуры (struct)
 
 export const ElemetType = Object.freeze({
     Pin: 0,

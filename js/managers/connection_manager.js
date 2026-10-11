@@ -1,21 +1,23 @@
-
 //selectedNode
+
+//пока не ясно что с этим делать
+////реализовать стратегию?
 
 export default class ConnectionManager{
 
     //только один экземпляр может существовать
     constructor(bus){
-        if(ConnectionManager.instance){
-            return ConnectionManager.instance;
-        }
+
         
-        this.bus = bus;
-        this.selectedNode = null;
-        ConnectionManager.instance = this;
+
+        //this.bus = bus;
+        //this.selectedNode = null;
 
         return this;
     }
 
+    /*
+    //выбор узла
     selectNode(node){
         if(this.selectedNode == node) return;
 
@@ -27,15 +29,19 @@ export default class ConnectionManager{
         }
     }
 
+    //снятие выбранного узла
     unselectCurrentNode(){
         this.selectedNode = null;
     }
+    */
 
-    connectNodes(){
-
+    //соединение узлов (проводком)
+    connectNodes(node1, node2){
+        
     }
 
-    unconnectNodes(){
+    //рассоединение узлов (перерезаем провод)
+    unconnectNodes(node1, node2){
 
     }
 }

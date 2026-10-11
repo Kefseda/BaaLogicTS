@@ -1,4 +1,4 @@
-//это моя Model
+//это Model
 //хранение данных, имения ф-ций над ними
 
 export default class Circuit{

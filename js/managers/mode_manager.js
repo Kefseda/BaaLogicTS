@@ -3,9 +3,13 @@ const GameMode = Object.freeze({
     Run: 1
 });
 
+//есть у симулятора 2 режима
+// Run - симуляция схемы
+// Edit - составление схемы
+
 export default class ModeManager{
     
-    //только один экземпляр может существовать
+    //только один экземпляр может существовать < удалить
     constructor(bus){
         if(ModeManager.instance){
             return ModeManager.instance;

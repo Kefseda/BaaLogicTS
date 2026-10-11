@@ -1,6 +1,7 @@
 import Pin from '/BaaLogicTS/js/components/entities/pin.js'
 
 //помогает 'построить' логический элемент
+
 export default class ComponentBuilder{
     constructor(xPos, yPos){
         this._component = new Konva.Group({

@@ -6,7 +6,8 @@
 
 export default class Controller{
     constructor(circuit, stage, view, wire_manager){
-        
+        this.selectedPin = null
+
         this.circuit = circuit;
         this.view = view;
         this.stage = stage;
@@ -16,6 +17,10 @@ export default class Controller{
     }
 
     _bind(){
+
+        //в этих обработчиках нету нормальных проверок (спасибо js)
+        //ждите ошибки когда наведетесь не на узел
+
         this.stage.on('dragmove', e => {
             const group = e.target;
             if(!group || !group.getParent()) return;
@@ -61,23 +66,34 @@ export default class Controller{
             this.stage.container().style.cursor = 'default';
         })
 
+        //обрабатываем клик
         this.stage.on('mousedown', e => {
             const pin = e.target.getParent();
 
             if(!pin)return;
 
-            if(this.selectedPin === pin) {
+            if(this.selectedPin === null){
+                //если в буфере нету узла
+                pin.select();
+                this.selectedPin = pin;
+            }
+            else{
+                //если в буфере есть узел
+
+                //снимаем выделение
                 this.selectedPin.unselect();
+
+                //если кликнули по буферному (тому же)
+                if(this.selectedPin === pin) {
+                    this.selectedPin = null;
+                    return;
+                }
+
+                this.view.createWire(this.selectedPin, pin);
                 this.selectedPin = null;
-                return;
             }
 
-            //снимаем выделение с прошлого
-            if(this.selectedPin) this.selectedPin.unselect();
-
-            this.selectedPin = pin;
-
-            this.selectedPin.select();
+            //this.wire_manager.connectNodes(this.selectedPin, pin);
         })
     }
 
