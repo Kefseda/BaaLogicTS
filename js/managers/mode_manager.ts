@@ -5,7 +5,7 @@ import EventBus from "../systems/event_bus";
 //     Run: 1
 // });
 
-enum GameMode {
+export enum GameMode {
     Edit, Run
 }
 
