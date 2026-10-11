@@ -1,13 +1,13 @@
 import Konva from 'konva';
 
 //точка входа (инициализация)
-import EventBus from './systems/event_bus.js'
-import ModeManager from './managers/mode_manager.js'
-import ConnectionManager from './managers/connection_manager.js'
+import EventBus from './systems/event_bus'
+import ModeManager from './managers/mode_manager'
+import ConnectionManager from './managers/connection_manager'
 
-import Controller from './systems/controller.js'
-import Circuit from './managers/circuit.js'
-import UIManager from './managers/ui_manager.js'
+import Controller from './systems/controller'
+import Circuit from './managers/circuit'
+import UIManager from './managers/ui_manager'
 
 const eventBus = new EventBus();
 const modeManager = new ModeManager(eventBus);
