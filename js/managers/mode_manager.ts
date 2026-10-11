@@ -1,17 +1,14 @@
 import EventBus from "../systems/event_bus";
 
-// const GameMode = Object.freeze({
-//     Edit: 0,
-//     Run: 1
-// });
-
+/// есть у симулятора 2 режима
 export enum GameMode {
-    Edit, Run
+    // составление схемы
+    Edit,
+
+    // симуляция схемы
+    Run,
 }
 
-//есть у симулятора 2 режима
-// Run - симуляция схемы
-// Edit - составление схемы
 
 export default class ModeManager {
 
