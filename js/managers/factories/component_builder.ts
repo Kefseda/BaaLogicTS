@@ -34,7 +34,8 @@ export default class ComponentBuilder{
     }
 
     changeNodeShape(){
-        this.skin = new Pin('123').skin;
+        // this.skin = new Pin('123').skin;
+        this.skin = new Pin('123');
         this.#component.add(this.skin);
 
         return this;

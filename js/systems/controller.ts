@@ -42,18 +42,18 @@ export default class Controller{
         //в этих обработчиках нету нормальных проверок (спасибо js)
         //ждите ошибки когда наведетесь не на узел
 
-        // this.stage.on('dragmove', e => {
-        //     const group = e.target;
-        //     if(!group || !group.getParent()) return;
+        this.stage.on('dragmove', e => {
+            const group = e.target;
+            if(!group || !group.getParent()) return;
             
-        //     for(const [id, nv] of this.view.shapes){
-        //         // TYPE ERROR!
-        //         if(nv.group === group){
-        //             this.circuit.moveComponent(id, group.x(), group.y());
-        //             break;
-        //         }
-        //     }
-        // })
+            for(const [id, nv] of this.view.shapes){
+                // TYPE ERROR!
+                if(nv.group === group){
+                    this.circuit.moveComponent(id, group.x(), group.y());
+                    break;
+                }
+            }
+        })
 
         this.stage.on('mouseover', e => {
             const pin = e.target.getParent();
@@ -98,7 +98,7 @@ export default class Controller{
 
             // if (!(pin instanceof Pin)) throw Error('пэпэ шнэйнэ вотафа?');
 
-            if(this.selectedPin === undefined){
+            if(this.selectedPin === null){
                 //если в буфере нету узла
                 pin.select();
                 this.selectedPin = pin;

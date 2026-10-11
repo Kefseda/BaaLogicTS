@@ -6,7 +6,7 @@ import { Shape } from "konva/lib/Shape";
 
 //должен быть массив из соседей? нет
 
-export default class Pin extends Konva.Group{
+export default class Pin extends Konva.Group {
 
     // TODO: why string??
     idPin: string
