@@ -1,5 +1,8 @@
 {
-  "dependencies": {
+  "_dependencies": {
     "konva": "^10.3.0"
+  },
+  "devDependencies": {
+    "vite": "^8.3.4"
   }
 }
