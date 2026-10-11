@@ -8,6 +8,7 @@ import ConnectionManager from './managers/connection_manager'
 import Controller from './systems/controller'
 import Circuit from './managers/circuit'
 import UIManager from './managers/ui_manager'
+import Pin from './components/entities/pin';
 
 // import { GameMode } from './managers/mode_manager'
 
@@ -32,7 +33,7 @@ const modeBtn = document.getElementById('mode_btn')!;
 modeBtn.addEventListener('click', () => modeManager.ToggleMode());
 
 const pinBtn = document.getElementById('pin_btn')!;
-pinBtn.addEventListener('click', () => controller.addComponent({ id: 123, xPos: 100, yPos: 100, type: "Pin", value: 0 }));
+pinBtn.addEventListener('click', () => controller.addComponent({ id: 123, xPos: 100, yPos: 100, type: "Pin", /* value: 0 */ }));
 
 const notBtn = document.getElementById('not_btn')!;
 notBtn.addEventListener('click', () => controller.addComponent({ id: 123, xPos: 100, yPos: 100, type: "LogicElement"}));

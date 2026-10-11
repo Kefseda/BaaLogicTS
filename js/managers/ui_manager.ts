@@ -1,5 +1,8 @@
+import Konva from 'konva';
 import ComponentBuilder from './factories/component_builder.js'
 import WireFactory from './factories/wire_factory.js';
+import EventBus from '../systems/event_bus.js';
+import { ElemetType } from '../components/entities/circuit_component.js';
 
 //это будет View
 //он отвечает за рисование объектов
@@ -7,19 +10,26 @@ import WireFactory from './factories/wire_factory.js';
 
 export default class UIManager{
 
+    wires = new WireFactory();
+    layer: Konva.Layer
+    bus: EventBus<any>
+    shapes = new Map<number, Konva.Group>();
+
     //map<id, KonvaShape>
 
     //тут создается холст для рисования
     //constructor({doc = document} = {}){             < деструктуризация
-    constructor(layer, bus){  
+    constructor(layer: Konva.Layer, bus: EventBus<any>){  
 
-        this.wires = new WireFactory();
+        // this.wires = new WireFactory();
         this.layer = layer;
         this.bus = bus;
-        this.shapes = new Map();
+        // this.shapes = new Map();
     }
 
-    drawComponent(component){
+    // TODO: enum
+
+    drawComponent(component: { id: number, type: string }){
 
         switch(component.type){
             case "Pin":
@@ -42,7 +52,7 @@ export default class UIManager{
         }
     }
 
-    createWire(node1, node2){
+    createWire(node1: any, node2: any){
         var absPos1 = node1.getAbsolutePosition();
         var absPos2 = node2.getAbsolutePosition();
 
@@ -51,7 +61,7 @@ export default class UIManager{
         //this.shapes.set('', wire);
     }
 
-    wibeComponent(id){
+    wibeComponent(id: number){
 
         this.shapes.delete(id);
 

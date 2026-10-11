@@ -1,18 +1,23 @@
+import Konva from 'konva';
 import Pin from '../../components/entities/pin.js'
+import { Shape } from 'konva/lib/Shape';
 
 //помогает 'построить' логический элемент
 
 export default class ComponentBuilder{
-    constructor(xPos, yPos){
-        this._component = new Konva.Group({
+    #component: Konva.Group
+    skin?: Shape
+
+    constructor(xPos: number, yPos: number){
+        this.#component = new Konva.Group({
             x: xPos,
-            y: yPos
+            y: yPos,
         });
 
-        this._component.draggable(true);
+        this.#component.draggable(true);
     }
 
-    addInputs(count){
+    addInputs(count: number){
         for(var i = 0; i < count; i++){
             new Pin('123');
         }
@@ -20,7 +25,7 @@ export default class ComponentBuilder{
         return this;
     }
 
-    addOutputs(count){
+    addOutputs(count: number){
         for(var i = 0; i < count; i++){
             new Pin('123');
         }
@@ -29,8 +34,8 @@ export default class ComponentBuilder{
     }
 
     changeNodeShape(){
-        this.skin = new Pin('123');
-        this._component.add(this.skin);
+        this.skin = new Pin('123').skin;
+        this.#component.add(this.skin);
 
         return this;
     }
@@ -43,7 +48,7 @@ export default class ComponentBuilder{
             stroke: 'black',
             strokeWidth: 4,
         });
-        this._component.add(this.skin);
+        this.#component.add(this.skin);
 
         return this;
     }
@@ -57,17 +62,18 @@ export default class ComponentBuilder{
             strokeWidth: 4,
             closed: true
         });
-        this._component.add(this.skin);
+
+        this.#component.add(this.skin);
 
         return this;
     }
 
-    addName(name){
+    addName(name: string){
 
         return this;
     }
 
     getResult(){
-        return this._component;
+        return this.#component;
     }
 }

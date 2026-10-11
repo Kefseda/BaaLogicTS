@@ -1,26 +1,36 @@
 //это узел и он может как создаваться на логических элементах так и существовать отдельно
 
+import Konva from "konva";
+import { ContainerConfig } from "konva/lib/Container";
+import { Shape } from "konva/lib/Shape";
+
 //должен быть массив из соседей? нет
 
 export default class Pin extends Konva.Group{
-    constructor(id, config){
+
+    // TODO: why string??
+    idPin: string
+    isSelected = false
+
+    sun = new Konva.Circle({
+        x: 0,
+        y: 0,
+        radius: 16,
+        fill: '#ffffff00'
+    });
+    
+    skin = new Konva.Circle({
+        x: 0,
+        y: 0,
+        radius: 8,
+        fill: 'black'
+    });
+
+    constructor(id: string, config?: ContainerConfig){
         
         super(config);
 
-        this.sun = new Konva.Circle({
-            x: 0,
-            y: 0,
-            radius: 16,
-            fill: '#ffffff00'
-        });
         this.add(this.sun);
-        
-        this.skin = new Konva.Circle({
-            x: 0,
-            y: 0,
-            radius: 8,
-            fill: 'black'
-        });
         this.add(this.skin);
 
         this.idPin = id;
@@ -29,11 +39,13 @@ export default class Pin extends Konva.Group{
     }
 
     inside(){
-        if(!this.isSelected) this.set_color('yellow');
+        if(!this.isSelected)
+            this.set_color('yellow');
     }
 
     outside(){
-        if(!this.isSelected) this.set_color('none');
+        if(!this.isSelected)
+            this.set_color('none');
     }
 
     unselect(){
@@ -46,7 +58,8 @@ export default class Pin extends Konva.Group{
         this.set_color('green');
     }
 
-    set_color(color){
+    // TODO: enum
+    set_color(color: string){
         switch(color){
             case 'yellow':
                 this.sun.fill('#f6ff00ad');
