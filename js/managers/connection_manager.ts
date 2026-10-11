@@ -1,19 +1,21 @@
 //selectedNode
 
+import EventBus from "../systems/event_bus";
+
 //пока не ясно что с этим делать
 ////реализовать стратегию?
 
 export default class ConnectionManager{
 
     //только один экземпляр может существовать
-    constructor(bus){
+    constructor(bus: EventBus<any>){
 
         
 
         //this.bus = bus;
         //this.selectedNode = null;
 
-        return this;
+        // return this;
     }
 
     /*
@@ -36,12 +38,12 @@ export default class ConnectionManager{
     */
 
     //соединение узлов (проводком)
-    connectNodes(node1, node2){
+    connectNodes(node1: any, node2: any){
         
     }
 
     //рассоединение узлов (перерезаем провод)
-    unconnectNodes(node1, node2){
+    unconnectNodes(node1: any, node2: any){
 
     }
 }

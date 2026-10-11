@@ -9,9 +9,9 @@ import Controller from './systems/controller'
 import Circuit from './managers/circuit'
 import UIManager from './managers/ui_manager'
 
-import { GameMode } from './managers/mode_manager'
+// import { GameMode } from './managers/mode_manager'
 
-const eventBus = new EventBus<GameMode>();
+const eventBus = new EventBus<any>();
 const modeManager = new ModeManager(eventBus);
 const connectionManager = new ConnectionManager(eventBus);
 
