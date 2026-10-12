@@ -6,6 +6,12 @@ import { Shape } from "konva/lib/Shape";
 
 //должен быть массив из соседей? нет
 
+enum Color {
+    none,
+    yellow,
+    green,
+}
+
 export default class Pin extends Konva.Group {
 
     // TODO: why string??
@@ -40,34 +46,34 @@ export default class Pin extends Konva.Group {
 
     inside(){
         if(!this.isSelected)
-            this.set_color('yellow');
+            this.set_color(Color.yellow);
     }
 
     outside(){
         if(!this.isSelected)
-            this.set_color('none');
+            this.set_color(Color.none);
     }
 
     unselect(){
         this.isSelected = false;
-        this.set_color('none');
+        this.set_color(Color.none);
     }
 
     select(){
         this.isSelected = true;
-        this.set_color('green');
+        this.set_color(Color.green);
     }
 
     // TODO: enum
-    set_color(color: string){
+    set_color(color: Color){
         switch(color){
-            case 'yellow':
+            case Color.yellow:
                 this.sun.fill('#f6ff00ad');
                 break;
-            case 'green':
+            case Color.green:
                 this.sun.fill('#09ff00ad');
                 break;
-            case 'none':
+            case Color.none:
                 this.sun.fill('#ffffff00');
                 break;
         }
