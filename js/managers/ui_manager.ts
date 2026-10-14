@@ -3,6 +3,7 @@ import ComponentBuilder from './factories/component_builder.js'
 import WireFactory from './factories/wire_factory.js';
 import EventBus from '../systems/event_bus.js';
 import { ElemetType } from '../components/entities/circuit_component.js';
+import Pin from "../components/entities/pin";
 
 //это будет View
 //он отвечает за рисование объектов
@@ -13,7 +14,7 @@ export default class UIManager{
     wires = new WireFactory();
     layer: Konva.Layer
     bus: EventBus<any>
-    shapes = new Map<number, Konva.Group>();
+    shapes = new Map<string, Konva.Group>();
 
     //map<id, KonvaShape>
 
@@ -29,14 +30,15 @@ export default class UIManager{
 
     // TODO: enum
 
-    drawComponent(component: { id: number, type: string }){
+    drawComponent(component: { id: string, type: string }){
 
         switch(component.type){
             case "Pin":
                 console.log('создаю узел');
-                var element = new ComponentBuilder(10, 10).changeNodeShape().getResult();
-                this.layer.add(element);
-                this.shapes.set(component.id, element);
+                var pin = new Pin(10,10);
+                pin.draggable(true);
+                this.layer.add(pin);
+                this.shapes.set(component.id, pin);
                 break;
             case "LogicElement":
                 var element = new ComponentBuilder(10, 10).changeQuadShape().getResult();
@@ -61,7 +63,11 @@ export default class UIManager{
         //this.shapes.set('', wire);
     }
 
-    wibeComponent(id: number){
+    redrawWiresForNode(nodeId: string){
+
+    }
+
+    wibeComponent(id: string){
 
         this.shapes.delete(id);
 

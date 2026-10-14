@@ -1,8 +1,7 @@
 //это узел и он может как создаваться на логических элементах так и существовать отдельно
 
 import Konva from "konva";
-import { ContainerConfig } from "konva/lib/Container";
-import { Shape } from "konva/lib/Shape";
+import { nanoid } from 'nanoid';
 
 //должен быть массив из соседей? нет
 
@@ -15,8 +14,7 @@ enum Color {
 export default class Pin extends Konva.Group {
 
     // TODO: why string??
-    idPin: string
-    isSelected = false
+    isSelected: boolean = false
 
     sun = new Konva.Circle({
         x: 0,
@@ -32,16 +30,19 @@ export default class Pin extends Konva.Group {
         fill: 'black'
     });
 
-    constructor(id: string, config?: ContainerConfig){
-        
-        super(config);
+    constructor(xPos: number, yPos: number){
+        super(
+        {
+            x: xPos,
+            y: yPos,
+            name: 'pin',
+            id: nanoid()
+        });
 
-        this.add(this.sun);
+        this.add(this.sun);        
         this.add(this.skin);
 
-        this.idPin = id;
-
-        console.log('узел создан, id:', this.idPin);
+        console.log('узел создан, id:', this.id());
     }
 
     inside(){

@@ -2,6 +2,8 @@ import Konva from 'konva';
 import Pin from '../../components/entities/pin.js'
 import { Shape } from 'konva/lib/Shape';
 
+import { nanoid } from 'nanoid';
+
 //помогает 'построить' логический элемент
 
 export default class ComponentBuilder{
@@ -19,7 +21,7 @@ export default class ComponentBuilder{
 
     addInputs(count: number){
         for(var i = 0; i < count; i++){
-            new Pin('123');
+            new Pin(0,0);
         }
 
         return this;
@@ -27,16 +29,8 @@ export default class ComponentBuilder{
 
     addOutputs(count: number){
         for(var i = 0; i < count; i++){
-            new Pin('123');
+            new Pin(0,0);
         }
-
-        return this;
-    }
-
-    changeNodeShape(){
-        // this.skin = new Pin('123').skin;
-        this.skin = new Pin('123');
-        this.#component.add(this.skin);
 
         return this;
     }
@@ -75,6 +69,7 @@ export default class ComponentBuilder{
     }
 
     getResult(){
+        
         return this.#component;
     }
 }

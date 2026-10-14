@@ -39,91 +39,82 @@ export default class Controller{
 
     _bind(){
 
-        //в этих обработчиках нету нормальных проверок (спасибо js)
-        //ждите ошибки когда наведетесь не на узел
-
         this.stage.on('dragmove', e => {
-            const group = e.target;
-            if(!group || !group.getParent()) return;
-            
-            for(const [id, nv] of this.view.shapes){
-                // TYPE ERROR!
-                if(nv.group === group){
-                    this.circuit.moveComponent(id, group.x(), group.y());
-                    break;
-                }
+            const pin = e.target.findAncestor('.pin', true);
+            if(pin){
+                this.circuit.moveComponent(pin.id(), pin.x(), pin.y());
             }
         })
 
         this.stage.on('mouseover', e => {
-            const pin = e.target.getParent();
 
-            if(!pin)return;
+            const pin = e.target.findAncestor('.pin', true);
+            if(pin){
+                if(pin instanceof Pin == false) return;
 
-            /// potential TYPE ERROR
-            if(this.hoveredPin === pin) return;
+                if(this.hoveredPin === pin) return;
 
-            //снимаем выделение с прошлого
-            if(this.hoveredPin) this.hoveredPin.outside();
+                //снимаем выделение с прошлого
+                if(this.hoveredPin) this.hoveredPin.outside();
 
-            /// TYPE ERROR
-            // this.hoveredPin = pin;
+                this.hoveredPin = pin;
 
-            //подсвечиваем
-            this.hoveredPin?.inside();
-            
-            //поменять курсор
-            this.stage.container().style.cursor = 'pointer';
+                this.hoveredPin?.inside();
+
+                this.stage.container().style.cursor = 'pointer';
+                return;
+            }
         })
 
         this.stage.on('mouseout', e => {
-            const pin = e.target.getParent();
 
-            if(!pin)return;
+            const pin = e.target.findAncestor('.pin', true);
+            if(pin){
+                if(pin instanceof Pin == false) return;
 
-            //снимаем выделение с прошлого
-            if(this.hoveredPin) this.hoveredPin.outside();
+                //снимаем выделение с прошлого
+                if(this.hoveredPin) this.hoveredPin.outside();
 
-            this.hoveredPin = null;
+                this.hoveredPin = null;
             
-            //поменять курсор
-            this.stage.container().style.cursor = 'default';
+                this.stage.container().style.cursor = 'default';
+                return;
+            }
         })
 
         //обрабатываем клик
-        this.stage.on('mousedown', e => {
-            const pin = e.target.getParent();
+        this.stage.on('click', e => {
 
-            if(!pin)return;
+            const pin = e.target.findAncestor('.pin', true);
+            if(pin){
+                if(pin instanceof Pin == false) return;
 
-            // if (!(pin instanceof Pin)) throw Error('пэпэ шнэйнэ вотафа?');
+                if(this.selectedPin === null){
+                    //если в буфере нету узла
 
-            if(this.selectedPin === null){
-                //если в буфере нету узла
-                pin.select();
-                this.selectedPin = pin;
-            } else {
-                //если в буфере есть узел
+                    pin.select();
+                    this.selectedPin = pin;
+                } else {
+                    //если в буфере есть узел
 
-                //снимаем выделение
-                this.selectedPin.unselect();
+                    //снимаем выделение
+                    this.selectedPin.unselect();
 
-                //если кликнули по буферному (тому же)
-                if(this.selectedPin === pin) {
+                    //если кликнули по буферному (тому же)
+                    if(this.selectedPin === pin) {
+                        this.selectedPin = null;
+                        return;
+                    }
+
+                    this.view.createWire(this.selectedPin, pin);
                     this.selectedPin = null;
-                    return;
                 }
-
-                this.view.createWire(this.selectedPin, pin);
-                this.selectedPin = null;
             }
-
-            //this.wire_manager.connectNodes(this.selectedPin, pin);
         })
     }
 
     addComponent(component: {
-        id: number,
+        id: string,
         type: string,
         xPos: number,
         yPos: number,
@@ -132,7 +123,7 @@ export default class Controller{
         this.view.drawComponent(component);
     }
 
-    removeComponent(id: number){
+    removeComponent(id: string){
         this.circuit.deleteComponent(id);
         this.view.wibeComponent(id);
     }

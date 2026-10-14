@@ -1,17 +1,5 @@
 //просто всякие структуры (struct)
 
-// export const ElemetType = Object.freeze({
-//     Pin: 0,
-//     NOT: 10,
-//     AND: 11,
-//     OR: 12,
-//     NAND: 13,
-//     NOR: 14,
-//     Switch: 20,
-//     Lamp: 30,
-//     Custom: 40
-// });
-
 export enum ElemetType {
     Pin = 0,
     NOT = 10,

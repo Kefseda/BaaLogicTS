@@ -18,11 +18,11 @@ export default class Circuit{
         
     }
 
-    deleteComponent(id: number){
+    deleteComponent(id: string){
         
     }
 
-    moveComponent(id: number, x: number, y: number){
+    moveComponent(id: string, x: number, y: number){
         
     }
 
