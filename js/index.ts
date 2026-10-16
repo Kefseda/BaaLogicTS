@@ -9,8 +9,7 @@ import Controller from './systems/controller'
 import Circuit from './managers/circuit'
 import UIManager from './managers/ui_manager'
 import Pin from './components/entities/pin';
-
-// import { GameMode } from './managers/mode_manager'
+import {ElementType} from './components/entities/circuit_component';
 
 const eventBus = new EventBus<any>();
 const modeManager = new ModeManager(eventBus);
@@ -33,10 +32,10 @@ const modeBtn = document.getElementById('mode_btn')!;
 modeBtn.addEventListener('click', () => modeManager.ToggleMode());
 
 const pinBtn = document.getElementById('pin_btn')!;
-pinBtn.addEventListener('click', () => controller.addComponent({ id: '123', xPos: 100, yPos: 100, type: "Pin", /* value: 0 */ }));
+pinBtn.addEventListener('click', () => controller.createComponent(ElementType.Pin, 100, 100, 'pin'));
 
 const notBtn = document.getElementById('not_btn')!;
-notBtn.addEventListener('click', () => controller.addComponent({ id: '123', xPos: 100, yPos: 100, type: "LogicElement"}));
+notBtn.addEventListener('click', () => controller.addComponent({ id: 123, xPos: 100, yPos: 100, type: "LogicElement"}));
 
 /*
 const pinBtn = document.getElementById('pin_btn');

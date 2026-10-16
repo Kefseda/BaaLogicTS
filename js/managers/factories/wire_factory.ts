@@ -1,7 +1,7 @@
 //просто завод проводов
 
 import Wire from '../../components/entities/wire.js';
-import Konva from "konva";
+import { nanoid } from 'nanoid';
 
 export default class WireFactory{
     createwire(
@@ -10,7 +10,7 @@ export default class WireFactory{
         toX: number,
         toY: number
     ) {
-        const wire = new Wire(fromX, fromY, toX, toY);
+        const wire = new Wire(nanoid(), fromX, fromY, toX, toY);
         return wire;
     }
 }

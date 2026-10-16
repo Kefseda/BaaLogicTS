@@ -1,52 +1,59 @@
 //просто всякие структуры (struct)
 
-export enum ElemetType {
+export enum ElementType {
     Pin = 0,
-    NOT = 10,
-    AND = 11,
-    OR = 12,
-    NAND = 13,
-    NOR = 14,
-    Switch = 20,
-    Lamp = 30,
-    Custom = 40,
+    LogicElement = 1,
+    Input = 2,
+    Output = 3,
+    Custom = 4
 }
 
-// export const InputElement = {
-//     id,
-//     xPos,
-//     yPos,
-//     name: '',
-//     type,
-//     outputs: new[]
-// }
+export enum BooleanOperation {
+    NONE,
+    NOT,
+    AND,
+    OR,
+    NAND,
+    NOR
+}
 
-// export const LogicElement = {
-//     id,
-//     xPos,
-//     yPos,
-//     name: '',
-//     type,
-//     inputs: new[],
-//     outputs: new[]
-// }
+export enum SignalType {
+    OFF,
+    ON,
+    undefined
+}
 
-// export const CustomElement = {
-//     id,
-//     xPos,
-//     yPos,
-//     name: '',
-//     type,
-//     subCircuit: new Map(),
-//     inputs: new[],
-//     outputs: new[]
-// }
+export enum PinType {
+    UnOwned,
+    Input,
+    Output
+}
 
-// export const Pin = {
-//     id,
-//     xPos,
-//     yPos,
-//     type,
-//     neighbours: new[],
-//     value: 0
-// }
+
+export interface BaseComponent {
+    id: string,
+    xPos: number,
+    yPos: number,
+    type: ElementType
+}
+
+export type Component = BaseComponent | ElementModel | PinModel;
+
+export interface ElementModel extends BaseComponent {
+    operation: BooleanOperation
+}
+
+export interface PinModel extends BaseComponent {
+    type: ElementType.Pin
+    value: SignalType
+    idOwner?: string
+    kind: PinType
+}
+
+export interface WireModel {
+    id: string,
+    xPos: number,
+    yPos: number,
+    pinAid: string,
+    pinBid: string
+}

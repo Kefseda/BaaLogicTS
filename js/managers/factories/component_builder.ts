@@ -21,7 +21,7 @@ export default class ComponentBuilder{
 
     addInputs(count: number){
         for(var i = 0; i < count; i++){
-            new Pin(0,0);
+            new Pin(nanoid(), 0, 0);
         }
 
         return this;
@@ -29,7 +29,7 @@ export default class ComponentBuilder{
 
     addOutputs(count: number){
         for(var i = 0; i < count; i++){
-            new Pin(0,0);
+            new Pin(nanoid(), 0, 0);
         }
 
         return this;

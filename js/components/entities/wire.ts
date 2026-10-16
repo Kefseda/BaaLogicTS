@@ -2,7 +2,7 @@ import Konva from "konva";
 import { nanoid } from 'nanoid';
 
 export default class Wire extends Konva.Line{
-    constructor(xPosA: number, yPosA: number, xPosB: number, yPosB: number){
+    constructor(idPin: string, xPosA: number, yPosA: number, xPosB: number, yPosB: number){
         super(
         {
             points: [xPosA, yPosA, xPosB, yPosB],
@@ -11,7 +11,7 @@ export default class Wire extends Konva.Line{
             strokeWidth: 8,
             lineCap: 'round',
             lineJoin: 'round',
-            id: nanoid()
+            id: idPin
         });
     
         console.log('провод создан, id:', this.id());

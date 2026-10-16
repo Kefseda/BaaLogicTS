@@ -7,11 +7,16 @@ import UIManager from "../managers/ui_manager";
 import ConnectionManager from "../managers/connection_manager";
 import { Container } from "konva/lib/Container";
 import Pin from "../components/entities/pin";
+import * as components from "../components/entities/circuit_component";
+import { nanoid } from 'nanoid';
+import ComponentBuilder from '../managers/factories/component_builder'
+import WireFactory from '../managers/factories/wire_factory';
 
 //хранит Circuit и View
 
 
 export default class Controller{
+    wireFactory = new WireFactory();
     circuit: Circuit
     stage: Konva.Stage
     view: UIManager
@@ -39,10 +44,19 @@ export default class Controller{
 
     _bind(){
 
+        //пин / узел
         this.stage.on('dragmove', e => {
             const pin = e.target.findAncestor('.pin', true);
             if(pin){
                 this.circuit.moveComponent(pin.id(), pin.x(), pin.y());
+
+                //на узле могут быть проводки
+                const pinModel = this.circuit.pins.get(pin.id());
+
+                if(!pinModel) throw new Error("узел призрак. Он как-бы есть, но он не зарегистрирован");
+
+
+
             }
         })
 
@@ -106,22 +120,124 @@ export default class Controller{
                         return;
                     }
 
-                    this.view.createWire(this.selectedPin, pin);
+                    this.createWire(this.selectedPin, pin);
                     this.selectedPin = null;
                 }
             }
         })
     }
 
-    addComponent(component: {
-        id: string,
-        type: string,
-        xPos: number,
-        yPos: number,
-    }) {
-        this.circuit.createComponent(component);
-        this.view.drawComponent(component);
+    //разбить на пины и лог элементы 2 метода
+    createComponent(type: components.ElementType, xPos: number, yPos: number, name: 'pin' | 'not' | 'and' | 'or') {
+        var viewComponent;
+        var modelComponent;
+        
+        var id : string = nanoid();
+
+        switch(type){
+            case components.ElementType.Pin:
+                viewComponent = new Pin(id, 10,10);
+                viewComponent.draggable(true);
+                
+                let pin : components.PinModel = { 
+                    id: id, 
+                    xPos: xPos, 
+                    yPos: yPos, 
+                    type: type, 
+                    value: components.SignalType.undefined,
+                    kind: components.PinType.UnOwned
+                };
+
+                modelComponent = pin;
+                break;
+
+            case components.ElementType.Input:
+                viewComponent = new ComponentBuilder(10, 10).changeTriangleShape().addOutputs(1).getResult();
+                
+                let input : components.BaseComponent = { 
+                    id: id,
+                    xPos: xPos, 
+                    yPos: yPos, 
+                    type: type
+                };
+
+                modelComponent = input;
+                break;
+
+            case components.ElementType.Output:
+                viewComponent = new ComponentBuilder(10, 10).changeTriangleShape().addInputs(1).getResult();
+
+                let ouput : components.BaseComponent = { 
+                    id: id, 
+                    xPos: xPos, 
+                    yPos: yPos, 
+                    type: type
+                };
+
+                modelComponent = ouput;
+                break;
+
+            case components.ElementType.LogicElement:
+                //найти его из базы
+                viewComponent = new ComponentBuilder(10, 10).changeQuadShape().getResult();
+
+                let element : components.ElementModel = { 
+                    id: id,
+                    operation: components.BooleanOperation.NONE,
+                    xPos: xPos, 
+                    yPos: yPos,
+                    type: type
+                };
+
+                modelComponent = element;
+
+                break;
+            
+            case components.ElementType.Custom:
+                //найти его из базы
+                viewComponent = new ComponentBuilder(10, 10).changeQuadShape().getResult();
+
+                let custom : components.ElementModel = { 
+                    id: id,
+                    operation: components.BooleanOperation.NONE,
+                    xPos: xPos, 
+                    yPos: yPos,
+                    type: type
+                };
+
+                modelComponent = custom;
+
+                break;
+        }
+
+
+        this.circuit.addComponent(modelComponent);
+        this.view.drawComponent(viewComponent);
     }
+
+    //как регистрировать зависимые пины?
+    createPin(){
+
+    }
+
+    createWire(node1: any, node2: any){
+        var absPos1 = node1.getAbsolutePosition();
+        var absPos2 = node2.getAbsolutePosition();
+
+        var wire = this.wireFactory.createwire(absPos1.x, absPos1.y, absPos2.x, absPos2.y);
+        this.view.drawComponent(wire);
+
+        var wireModel : components.WireModel = {
+            id: wire.id(),
+            xPos: (absPos1.x + absPos2.x) / 2,
+            yPos: (absPos1.y + absPos2.y) / 2,
+            pinAid: node1.id(),
+            pinBid: node2.id()
+        };
+
+        this.circuit.addComponent(wireModel);
+    }
+    
 
     removeComponent(id: string){
         this.circuit.deleteComponent(id);

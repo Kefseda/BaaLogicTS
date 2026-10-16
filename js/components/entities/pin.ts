@@ -13,7 +13,6 @@ enum Color {
 
 export default class Pin extends Konva.Group {
 
-    // TODO: why string??
     isSelected: boolean = false
 
     sun = new Konva.Circle({
@@ -30,13 +29,13 @@ export default class Pin extends Konva.Group {
         fill: 'black'
     });
 
-    constructor(xPos: number, yPos: number){
+    constructor(idPin: string, xPos: number, yPos: number){
         super(
         {
             x: xPos,
             y: yPos,
             name: 'pin',
-            id: nanoid()
+            id: idPin
         });
 
         this.add(this.sun);        
