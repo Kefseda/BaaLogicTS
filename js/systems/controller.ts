@@ -42,21 +42,42 @@ export default class Controller{
         this._bind();
     }
 
+    redrawWiresForNode(nodeId: string){
+        
+    }
+
     _bind(){
 
         //пин / узел
         this.stage.on('dragmove', e => {
             const pin = e.target.findAncestor('.pin', true);
             if(pin){
-                this.circuit.moveComponent(pin.id(), pin.x(), pin.y());
 
                 //на узле могут быть проводки
                 const pinModel = this.circuit.pins.get(pin.id());
 
                 if(!pinModel) throw new Error("узел призрак. Он как-бы есть, но он не зарегистрирован");
 
+                //1. находим id проводов в пине
+                const array: string[] = [...pinModel.wires];
 
+                //2. обновляем модели (пина и проводов)
+                this.circuit.moveComponent(pin.id(), pin.x(), pin.y());
 
+                for(const id of array){
+                    const wire = this.circuit.wires.get(id);
+                    
+                    if(wire === undefined)
+                        continue;
+
+                    //this.circuit.moveComponent(id, pin.x(), pin.y());
+                    //а как понять какой конец?!?!?!?
+                }
+
+                //3. обновляем точки проводов в представлении
+                for(const id of array){
+                    //this.view.redrawWire(id, ); достаем позицию из модели
+                }
             }
         })
 
@@ -127,6 +148,10 @@ export default class Controller{
         })
     }
 
+    //getWiresForPin(pinId: string) : string[]{
+    //    return [...Circuit(this.p)];
+    //}
+
     //разбить на пины и лог элементы 2 метода
     createComponent(type: components.ElementType, xPos: number, yPos: number, name: 'pin' | 'not' | 'and' | 'or') {
         var viewComponent;
@@ -145,14 +170,16 @@ export default class Controller{
                     yPos: yPos, 
                     type: type, 
                     value: components.SignalType.undefined,
-                    kind: components.PinType.UnOwned
+                    kind: components.PinType.UnOwned,
+                    wires: new Set()
+
                 };
 
                 modelComponent = pin;
                 break;
 
             case components.ElementType.Input:
-                viewComponent = new ComponentBuilder(10, 10).changeTriangleShape().addOutputs(1).getResult();
+                viewComponent = new ComponentBuilder(this.circuit).changeTriangleShape().addOutputs(1).getResult();
                 
                 let input : components.BaseComponent = { 
                     id: id,
@@ -165,7 +192,7 @@ export default class Controller{
                 break;
 
             case components.ElementType.Output:
-                viewComponent = new ComponentBuilder(10, 10).changeTriangleShape().addInputs(1).getResult();
+                viewComponent = new ComponentBuilder(this.circuit).changeTriangleShape().addInputs(1).getResult();
 
                 let ouput : components.BaseComponent = { 
                     id: id, 
@@ -179,7 +206,7 @@ export default class Controller{
 
             case components.ElementType.LogicElement:
                 //найти его из базы
-                viewComponent = new ComponentBuilder(10, 10).changeQuadShape().getResult();
+                viewComponent = new ComponentBuilder(this.circuit).changeQuadShape().getResult();
 
                 let element : components.ElementModel = { 
                     id: id,
@@ -195,7 +222,7 @@ export default class Controller{
             
             case components.ElementType.Custom:
                 //найти его из базы
-                viewComponent = new ComponentBuilder(10, 10).changeQuadShape().getResult();
+                viewComponent = new ComponentBuilder(this.circuit).changeQuadShape().getResult();
 
                 let custom : components.ElementModel = { 
                     id: id,

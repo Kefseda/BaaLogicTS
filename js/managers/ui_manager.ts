@@ -2,6 +2,7 @@ import Konva from 'konva';
 import EventBus from '../systems/event_bus';
 import Pin from "../components/entities/pin";
 import { Group } from 'konva/lib/Group';
+import Wire from '../components/entities/wire';
 
 //это будет View
 //он отвечает за рисование объектов
@@ -31,8 +32,14 @@ export default class UIManager{
         this.shapes.set(component.id(), component);
     }
 
-    redrawWiresForNode(nodeId: string){
-        
+    redrawWire(wireId: string, nodeAx: number, nodeAy: number, nodeBx: number, nodeBy: number){
+        var wire = this.shapes.get(wireId) as Wire;
+
+        if(wire === undefined || wire === null) return;
+
+        wire.points([nodeAx, nodeAy, nodeBx, nodeBy]);
+
+        //this.layer.batchDraw();
     }
 
     wibeComponent(id: string){

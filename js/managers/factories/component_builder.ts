@@ -1,27 +1,32 @@
 import Konva from 'konva';
 import Pin from '../../components/entities/pin.js'
+import Circuit from "../circuit";
 import { Shape } from 'konva/lib/Shape';
-
 import { nanoid } from 'nanoid';
 
-//помогает 'построить' логический элемент
-
+//помогает контроллеру собрать сложные и многосоставные объекты
 export default class ComponentBuilder{
     #component: Konva.Group
     skin?: Shape
+    model: Circuit;
 
-    constructor(xPos: number, yPos: number){
-        this.#component = new Konva.Group({
-            x: xPos,
-            y: yPos,
-        });
-
+    constructor(model: Circuit){                //эхххх, модель
+        this.#component = new Konva.Group();
         this.#component.draggable(true);
+
+        this.model = model;
+    }
+
+    setPosition(xPos: number, yPos: number){
+        this.#component.x(xPos);
+        this.#component.y(yPos);
     }
 
     addInputs(count: number){
         for(var i = 0; i < count; i++){
             new Pin(nanoid(), 0, 0);
+
+            //this.model.pins.set(); < реализовать
         }
 
         return this;
@@ -68,6 +73,7 @@ export default class ComponentBuilder{
         return this;
     }
 
+    //достаем получившийся компонент
     getResult(){
         
         return this.#component;

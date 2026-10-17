@@ -48,6 +48,7 @@ export interface PinModel extends BaseComponent {
     value: SignalType
     idOwner?: string
     kind: PinType
+    wires: Set<string>
 }
 
 export interface WireModel {
