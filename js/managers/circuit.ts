@@ -21,6 +21,10 @@ export default class Circuit{
 
         if('pinAid' in component){
             this.wires.set(component.id, component);
+
+            this.pins.get(component.pinAid)?.wires.add(component.id);
+            this.pins.get(component.pinBid)?.wires.add(component.id);
+            
             return;
         }
 
@@ -38,24 +42,29 @@ export default class Circuit{
                 if('kind' in component) this.pins.set(component.id, component);
                 break;
         }
-
-        
     }
 
-    deleteComponent(id: string, ){
-        
+    deleteComponent(id: string){
+        //опять switch case?
     }
 
-    moveComponent(id: string, x: number, y: number){
-        
+    moveComponent(component: components.BaseComponent, x: number, y: number){
+
+        if(component === undefined) return;
+
+        component.xPos = x;
+        component.yPos = y;
     }
 
+    //бесполезный?
     connect(pin1: unknown, pin2: unknown){
         
     }
 
     //пересчитываем сигналы в схеме
     process(){
+        //начинаем с логических переключателей и идем дальше
+        //обязательна небольшая задержка между пересчетами
 
     }
 }

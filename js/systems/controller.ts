@@ -58,25 +58,43 @@ export default class Controller{
 
                 if(!pinModel) throw new Error("узел призрак. Он как-бы есть, но он не зарегистрирован");
 
-                //1. находим id проводов в пине
+                this.circuit.moveComponent(pinModel, pin.x(), pin.y());
+
+                //находим id проводов в пине
                 const array: string[] = [...pinModel.wires];
 
-                //2. обновляем модели (пина и проводов)
-                this.circuit.moveComponent(pin.id(), pin.x(), pin.y());
+                if(array.length === 0) return;
 
-                for(const id of array){
+                
+                //обновляем модель проводов
+                /*for(const id of array){
                     const wire = this.circuit.wires.get(id);
                     
                     if(wire === undefined)
                         continue;
 
                     //this.circuit.moveComponent(id, pin.x(), pin.y());
-                    //а как понять какой конец?!?!?!?
-                }
+                }*/
 
-                //3. обновляем точки проводов в представлении
+                //обновляем точки проводов в представлении
                 for(const id of array){
-                    //this.view.redrawWire(id, ); достаем позицию из модели
+                    const wire = this.circuit.wires.get(id);
+
+                    if(wire === undefined)
+                        continue;
+
+                    const p1 = this.circuit.pins.get(wire?.pinAid);
+                    const p2 = this.circuit.pins.get(wire?.pinBid);
+
+                    if(p1 === undefined || p2 === undefined)
+                        continue;
+
+                    const x1 = p1?.xPos;
+                    const y1 = p1?.yPos;
+                    const x2 = p2?.xPos;
+                    const y2 = p2?.yPos;
+
+                    this.view.redrawWire(id, x1, y1, x2, y2);
                 }
             }
         })
@@ -161,7 +179,7 @@ export default class Controller{
 
         switch(type){
             case components.ElementType.Pin:
-                viewComponent = new Pin(id, 10,10);
+                viewComponent = new Pin(id, xPos, yPos);
                 viewComponent.draggable(true);
                 
                 let pin : components.PinModel = { 

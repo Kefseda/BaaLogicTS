@@ -3,6 +3,7 @@ import EventBus from '../systems/event_bus';
 import Pin from "../components/entities/pin";
 import { Group } from 'konva/lib/Group';
 import Wire from '../components/entities/wire';
+import { Stage } from 'konva/lib/Stage';
 
 //это будет View
 //он отвечает за рисование объектов
@@ -10,25 +11,33 @@ import Wire from '../components/entities/wire';
 
 export default class UIManager{
 
-    layer: Konva.Layer
-    bus: EventBus<any>
+    wireLayer: Konva.Layer;
+    layer: Konva.Layer;
+    bus: EventBus<any>;
     shapes = new Map<string, Konva.Node>();
 
     //тут создается холст для рисования
-    //constructor({doc = document} = {}){             < деструктуризация
-    constructor(layer: Konva.Layer, bus: EventBus<any>){  
-
-        // this.wires = new WireFactory();
-        this.layer = layer;
+    constructor(stage: Stage, bus: EventBus<any>){  
         this.bus = bus;
-        // this.shapes = new Map();
+        
+        this.layer = new Konva.Layer();
+        stage.add(this.layer);
+
+        this.wireLayer = new Konva.Layer();
+        stage.add(this.wireLayer);
+        
+        this.wireLayer.moveDown();
     }
 
-    // TODO: enum
+    // TODO: enum зачем?
 
     drawComponent(component: Konva.Group | Konva.Line){
 
-        this.layer.add(component);
+        if(component instanceof Wire)
+            this.wireLayer.add(component);
+        else
+            this.layer.add(component);
+
         this.shapes.set(component.id(), component);
     }
 
@@ -39,12 +48,11 @@ export default class UIManager{
 
         wire.points([nodeAx, nodeAy, nodeBx, nodeBy]);
 
-        //this.layer.batchDraw();
+        //this.layer.batchDraw(); < вроде как не пригодился
     }
 
     wibeComponent(id: string){
         this.shapes.get(id)?.destroy();
         this.shapes.delete(id);
-
     }
 }

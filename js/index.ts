@@ -21,10 +21,7 @@ const stage = new Konva.Stage({
     height: 600
 });
 
-const layer = new Konva.Layer();
-stage.add(layer);
-
-const ui = new UIManager(layer, eventBus);
+const ui = new UIManager(stage, eventBus);
 const circuit = new Circuit(eventBus);
 const controller = new Controller(circuit, stage, ui, connectionManager);
 
@@ -35,7 +32,7 @@ const pinBtn = document.getElementById('pin_btn')!;
 pinBtn.addEventListener('click', () => controller.createComponent(ElementType.Pin, 100, 100, 'pin'));
 
 const notBtn = document.getElementById('not_btn')!;
-notBtn.addEventListener('click', () => controller.addComponent({ id: 123, xPos: 100, yPos: 100, type: "LogicElement"}));
+notBtn.addEventListener('click', () => controller.createComponent({ id: 123, xPos: 100, yPos: 100, type: "LogicElement"}));
 
 /*
 const pinBtn = document.getElementById('pin_btn');
